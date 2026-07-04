@@ -10,6 +10,7 @@ import DashboardLayout from "@/components/layout/DashboardLayout";
 import UploadResume from "@/pages/resume/UploadResume";
 import Analytics from "@/pages/dashboard/Analytics";
 import ResumeHistory from "@/pages/resume/ResumeHistory";
+import ResumeDetails from "@/pages/resume/ResumeDetails";
 
 export default function AppRoutes() {
   return (
@@ -26,6 +27,7 @@ export default function AppRoutes() {
     <Route path="/" element={<Dashboard />} />
     <Route path="/upload" element={<UploadResume />} />
     <Route path="/history" element={<ResumeHistory />} />
+    <Route path="/resume/:id" element={<ResumeDetails />} />
     <Route path="/analytics" element={<Analytics />} />
   </Route>
 </Route>

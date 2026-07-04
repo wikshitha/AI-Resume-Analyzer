@@ -83,3 +83,68 @@ export const getUserResumes = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const deleteResume = async (req: Request<{ id: string }>, res: Response) => {
+  try {
+    const user = (req as any).user;
+    const { id } = req.params;
+
+    if (!user?.userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // ensure resume belongs to user
+    const resume = await prisma.resume.findFirst({
+      where: {
+        id,
+        userId: user.userId,
+      },
+    });
+
+    if (!resume) {
+      return res.status(404).json({ message: "Resume not found" });
+    }
+
+    await prisma.resume.delete({
+      where: { id },
+    });
+
+    return res.json({ message: "Resume deleted successfully" });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      message: "Failed to delete resume",
+      error: error instanceof Error ? error.message : error,
+    });
+  }
+};
+
+export const getResumeById = async (req: Request<{ id: string }>, res: Response) => {
+  try {
+    const user = (req as any).user;
+    const { id } = req.params;
+
+    if (!user?.userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const resume = await prisma.resume.findFirst({
+      where: {
+        id,
+        userId: user.userId,
+      },
+    });
+
+    if (!resume) {
+      return res.status(404).json({ message: "Resume not found" });
+    }
+
+    return res.json(resume);
+  } catch (error) {
+    return res.status(500).json({
+      message: "Failed to fetch resume",
+      error: error instanceof Error ? error.message : error,
+    });
+  }
+};
