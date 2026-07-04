@@ -29,10 +29,11 @@ model Resume {
   fileUrl     String
   extractedText String?
 
-  atsScore    Int?
-  strengths   String?
-  missingSkills String?
-  suggestions String?
+  atsScore       Int?
+
+strengths      String[]
+missingSkills  String[]
+suggestions    String[]
 
   createdAt   DateTime @default(now())
 
