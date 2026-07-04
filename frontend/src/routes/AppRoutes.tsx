@@ -7,6 +7,9 @@ import Dashboard from "@/pages/dashboard/Dashboard";
 import ProtectedRoute from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
 import DashboardLayout from "@/components/layout/DashboardLayout";
+import UploadResume from "@/pages/resume/UploadResume";
+import Analytics from "@/pages/dashboard/Analytics";
+import ResumeHistory from "@/pages/resume/ResumeHistory";
 
 export default function AppRoutes() {
   return (
@@ -21,6 +24,9 @@ export default function AppRoutes() {
       <Route element={<ProtectedRoute />}>
   <Route element={<DashboardLayout />}>
     <Route path="/" element={<Dashboard />} />
+    <Route path="/upload" element={<UploadResume />} />
+    <Route path="/history" element={<ResumeHistory />} />
+    <Route path="/analytics" element={<Analytics />} />
   </Route>
 </Route>
 

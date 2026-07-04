@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/lib/icons";
+import { FiFileText } from "react-icons/fi";
+
 
 function SidebarContent({ user, logout }: { user: { name?: string } | null; logout: () => void }) {
   return (
@@ -12,22 +14,57 @@ function SidebarContent({ user, logout }: { user: { name?: string } | null; logo
         AI Resume Analyzer
       </div>
 
-      <nav className="flex-1 p-4 space-y-4 text-sm">
-        <div className="flex items-center gap-2 cursor-pointer hover:text-blue-400">
-          <Icons.home />
-          Dashboard
-        </div>
+     <nav className="flex-1 p-4 space-y-2">
 
-        <div className="flex items-center gap-2 cursor-pointer hover:text-blue-400">
-          <Icons.upload />
-          Upload Resume
-        </div>
+  <NavLink
+    to="/"
+    className={({ isActive }) =>
+      `flex items-center gap-2 p-2 rounded ${
+        isActive ? "bg-blue-600" : "hover:bg-gray-800"
+      }`
+    }
+  >
+    <Icons.home />
+    Dashboard
+  </NavLink>
 
-        <div className="flex items-center gap-2 cursor-pointer hover:text-blue-400">
-          <Icons.analytics />
-          Analytics
-        </div>
-      </nav>
+  <NavLink
+    to="/upload"
+    className={({ isActive }) =>
+      `flex items-center gap-2 p-2 rounded ${
+        isActive ? "bg-blue-600" : "hover:bg-gray-800"
+      }`
+    }
+  >
+    <Icons.upload />
+    Upload Resume
+  </NavLink>
+
+  <NavLink
+    to="/analytics"
+    className={({ isActive }) =>
+      `flex items-center gap-2 p-2 rounded ${
+        isActive ? "bg-blue-600" : "hover:bg-gray-800"
+      }`
+    }
+  >
+    <Icons.analytics />
+    Analytics
+  </NavLink>
+
+  <NavLink
+  to="/history"
+  className={({ isActive }) =>
+    `flex items-center gap-2 p-2 rounded ${
+      isActive ? "bg-blue-600 text-white" : "hover:bg-gray-800"
+    }`
+  }
+>
+  <FiFileText size={18} />
+  Resume History
+</NavLink>
+
+</nav>
 
       <div className="space-y-3 border-t border-gray-700 p-4">
         <div className="text-xs text-gray-400">Signed in as</div>
