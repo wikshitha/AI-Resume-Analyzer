@@ -24,19 +24,28 @@ model User {
    RESUME MODEL
 ========================= */
 model Resume {
-  id          String   @id @default(cuid())
-  fileName    String
-  fileUrl     String
-  extractedText String?
+  id              String   @id @default(cuid())
 
-  atsScore       Int?
+  fileName        String
+  fileUrl         String
+  extractedText   String?
 
-strengths      String[]
-missingSkills  String[]
-suggestions    String[]
+  jobDescription  String?
 
-  createdAt   DateTime @default(now())
+  atsScore        Int?
+  jobMatchScore   Int?
+  keywordCoverage Int?
 
-  userId      String
-  user        User     @relation(fields: [userId], references: [id])
+  matchedSkills   String[]
+  missingSkills   String[]
+  strengths       String[]
+  weaknesses      String[]
+  suggestions     String[]
+
+  summary         String?
+
+  createdAt       DateTime @default(now())
+
+  userId          String
+  user            User @relation(fields: [userId], references: [id])
 }
