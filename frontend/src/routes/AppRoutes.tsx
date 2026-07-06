@@ -22,8 +22,8 @@ export default function AppRoutes() {
       </Route>
 
       {/* PROTECTED ROUTES */}
-      <Route element={<ProtectedRoute />}>
-  <Route element={<DashboardLayout />}>
+    <Route element={<ProtectedRoute />}>
+    <Route element={<DashboardLayout />}>
     <Route path="/" element={<Dashboard />} />
     <Route path="/upload" element={<UploadResume />} />
     <Route path="/history" element={<ResumeHistory />} />

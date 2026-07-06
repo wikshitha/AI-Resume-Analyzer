@@ -1,71 +1,197 @@
+import { useEffect, useState } from "react";
 import { FiFileText, FiPercent, FiAward } from "react-icons/fi";
 
+import api from "@/services/api";
+
+import ATSTrendChart from "@/components/dashboard/ATSTrendChart";
+import AIInsights from "@/components/dashboard/AIInsights";
+import RecentActivity from "@/components/dashboard/RecentActivity";
+
+type DashboardStats = {
+  totalAnalyses: number;
+  averageATS: number;
+  bestScore: number;
+};
+
+type TrendData = {
+  date: string;
+  score: number;
+};
+
+type Insights = {
+  improvement: number;
+  bestResume: string;
+  bestScore: number;
+  strongestSkill: string;
+  mostMissingSkill: string;
+};
+
+type RecentResume = {
+  id: string;
+  fileName: string;
+  atsScore: number;
+  jobMatchScore: number;
+  createdAt: string;
+};
+
 export default function Dashboard() {
-  const hasData = false;
+  const [loading, setLoading] = useState(true);
+
+  const [stats, setStats] = useState<DashboardStats>({
+    totalAnalyses: 0,
+    averageATS: 0,
+    bestScore: 0,
+  });
+
+  const [trendData, setTrendData] = useState<TrendData[]>([]);
+
+  const [insights, setInsights] = useState<Insights>({
+    improvement: 0,
+    bestResume: "-",
+    bestScore: 0,
+    strongestSkill: "-",
+    mostMissingSkill: "-",
+  });
+
+  const [recentResumes, setRecentResumes] = useState<RecentResume[]>([]);
+
+  useEffect(() => {
+    fetchDashboard();
+  }, []);
+
+  const fetchDashboard = async () => {
+    try {
+      const [statsRes, trendRes, insightsRes, recentRes] =
+        await Promise.all([
+          api.get("/dashboard/stats"),
+          api.get("/dashboard/trend"),
+          api.get("/dashboard/insights"),
+          api.get("/dashboard/recent"),
+        ]);
+
+      setStats(statsRes.data);
+      setTrendData(trendRes.data);
+      setInsights(insightsRes.data);
+      setRecentResumes(recentRes.data);
+    } catch (error) {
+      console.error("Dashboard loading failed:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex h-60 items-center justify-center">
+        <p className="text-gray-500">Loading dashboard...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
 
       {/* HEADER */}
+
       <div>
-        <h1 className="text-2xl font-bold text-gray-800 dark:text-white">
+        <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
           AI Resume Analyzer Dashboard
         </h1>
 
         <p className="text-gray-500 dark:text-gray-400">
-          Track your resume performance and ATS scores
+          Track your resume performance and AI analysis results
         </p>
       </div>
 
-      {/* STATS CARDS */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {/* KPI CARDS */}
 
-        <div className="bg-white dark:bg-gray-800 p-4 rounded shadow flex items-center gap-3">
-          <FiFileText className="text-blue-500 text-2xl" />
-          <div>
-            <p className="text-gray-500 text-sm">Total Analyses</p>
-            <h2 className="text-xl font-bold text-gray-800 dark:text-white">
-              12
-            </h2>
+      <div className="grid gap-5 md:grid-cols-3">
+
+        <div className="rounded-lg bg-white p-5 shadow dark:bg-gray-800">
+          <div className="flex items-center gap-4">
+            <FiFileText className="text-3xl text-blue-600" />
+
+            <div>
+              <p className="text-sm text-gray-500">
+                Total Analyses
+              </p>
+
+              <h2 className="text-3xl font-bold">
+                {stats.totalAnalyses}
+              </h2>
+            </div>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 p-4 rounded shadow flex items-center gap-3">
-          <FiPercent className="text-green-500 text-2xl" />
-          <div>
-            <p className="text-gray-500 text-sm">Average ATS Score</p>
-            <h2 className="text-xl font-bold text-gray-800 dark:text-white">
-              82%
-            </h2>
+        <div className="rounded-lg bg-white p-5 shadow dark:bg-gray-800">
+          <div className="flex items-center gap-4">
+            <FiPercent className="text-3xl text-green-600" />
+
+            <div>
+              <p className="text-sm text-gray-500">
+                Average ATS
+              </p>
+
+              <h2 className="text-3xl font-bold">
+                {stats.averageATS}%
+              </h2>
+            </div>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 p-4 rounded shadow flex items-center gap-3">
-          <FiAward className="text-yellow-500 text-2xl" />
-          <div>
-            <p className="text-gray-500 text-sm">Best Score</p>
-            <h2 className="text-xl font-bold text-gray-800 dark:text-white">
-              94%
-            </h2>
+        <div className="rounded-lg bg-white p-5 shadow dark:bg-gray-800">
+          <div className="flex items-center gap-4">
+            <FiAward className="text-3xl text-yellow-500" />
+
+            <div>
+              <p className="text-sm text-gray-500">
+                Best Score
+              </p>
+
+              <h2 className="text-3xl font-bold">
+                {stats.bestScore}%
+              </h2>
+            </div>
           </div>
         </div>
 
       </div>
 
-      {/* CHART PLACEHOLDER */}
-      <div className="bg-white dark:bg-gray-800 p-6 rounded shadow h-64 flex items-center justify-center text-gray-400">
-        ATS Trend Chart (Coming Soon)
+      {/* CHART + AI INSIGHTS */}
+
+      <div className="grid gap-6 lg:grid-cols-3">
+
+        <div className="lg:col-span-2">
+          <ATSTrendChart data={trendData} />
+        </div>
+
+        <AIInsights
+          improvement={insights.improvement}
+          bestResume={insights.bestResume}
+          bestScore={insights.bestScore}
+          strongestSkill={insights.strongestSkill}
+          mostMissingSkill={insights.mostMissingSkill}
+        />
+
       </div>
+
+      {/* RECENT AI ACTIVITY */}
+
+      <RecentActivity resumes={recentResumes} />
 
       {/* EMPTY STATE */}
-      {!hasData && (
-        <div className="bg-white dark:bg-gray-800 p-10 rounded shadow text-center">
-          <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
+
+      {stats.totalAnalyses === 0 && (
+        <div className="rounded-lg bg-white p-10 text-center shadow dark:bg-gray-800">
+
+          <h2 className="text-xl font-semibold">
             No Resume Analysis Yet
           </h2>
-          <p className="text-gray-500 mt-2">
-            Upload your first resume to get AI insights
+
+          <p className="mt-2 text-gray-500">
+            Upload and analyze your first resume to see AI insights.
           </p>
+
         </div>
       )}
 

@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaEye, FaTrash } from "react-icons/fa";
+import { FaEye, FaTrash, } from "react-icons/fa";
+
 import api from "@/services/api";
+
+import { Button } from "@/components/ui/button";
 
 type Resume = {
   id: string;
@@ -40,9 +43,12 @@ export default function ResumeHistory() {
     try {
       await api.delete(`/resume/${id}`);
 
-      setResumes((prev) => prev.filter((resume) => resume.id !== id));
+      setResumes((prev) =>
+        prev.filter((resume) => resume.id !== id)
+      );
     } catch (error) {
       console.error("Failed to delete resume:", error);
+      alert("Failed to delete resume.");
     }
   };
 
@@ -56,47 +62,71 @@ export default function ResumeHistory() {
 
   return (
     <div className="p-6">
-      <h1 className="mb-6 text-2xl font-bold">Resume History</h1>
+
+      <div className="mb-6 flex items-center justify-between">
+        <h1 className="text-3xl font-bold">
+          Resume History
+        </h1>
+
+        <Button onClick={() => navigate("/upload")}>
+          Upload Resume
+        </Button>
+      </div>
 
       {resumes.length === 0 ? (
-        <div className="rounded-lg border p-8 text-center">
-          <p className="text-gray-500">No resumes uploaded yet.</p>
+        <div className="rounded-xl border bg-white p-10 text-center shadow-sm">
+          <p className="text-gray-500">
+            No resumes uploaded yet.
+          </p>
         </div>
       ) : (
         <div className="space-y-4">
+
           {resumes.map((resume) => (
             <div
               key={resume.id}
-              className="flex items-center justify-between rounded-lg border bg-white p-4 shadow-sm"
+              className="flex flex-col gap-4 rounded-xl border bg-white p-5 shadow-sm md:flex-row md:items-center md:justify-between"
             >
               <div>
-                <h2 className="font-semibold">{resume.fileName}</h2>
+                <h2 className="text-lg font-semibold">
+                  {resume.fileName}
+                </h2>
 
                 <p className="text-sm text-gray-500">
                   Uploaded on{" "}
-                  {new Date(resume.createdAt).toLocaleString()}
+                  {new Date(
+                    resume.createdAt
+                  ).toLocaleString()}
                 </p>
               </div>
 
-              <div className="flex items-center gap-4">
-                <button
-                  onClick={() => navigate(`/resume/${resume.id}`)}
-                  className="text-blue-600 transition hover:text-blue-800"
-                  title="View Resume"
-                >
-                  <FaEye size={18} />
-                </button>
+              <div className="flex flex-wrap gap-2">
 
-                <button
-                  onClick={() => handleDelete(resume.id)}
-                  className="text-red-600 transition hover:text-red-800"
-                  title="Delete Resume"
+                <Button
+                  variant="outline"
+                  onClick={() =>
+                    navigate(`/resume/${resume.id}`)
+                  }
                 >
-                  <FaTrash size={18} />
-                </button>
+                  <FaEye className="mr-2" />
+                  View
+                </Button>
+
+                <Button
+                  variant="outline"
+                  onClick={() =>
+                    handleDelete(resume.id)
+                  }
+                  className="border-red-500 text-red-600 hover:bg-red-50"
+                >
+                  <FaTrash className="mr-2" />
+                  Delete
+                </Button>
+
               </div>
             </div>
           ))}
+
         </div>
       )}
     </div>

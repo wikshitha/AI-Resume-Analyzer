@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes";
 import resumeRoutes from "./routes/resume.routes";
-import resumeAnalysisRoutes from "./routes/resumeAnalysis.routes";
+import dashboardRoutes from "./routes/dashboard.routes";
 
 const app = express();
 
@@ -13,7 +13,7 @@ app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/resume", resumeRoutes);
-app.use("/api/resume", resumeAnalysisRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
 
 export default app;

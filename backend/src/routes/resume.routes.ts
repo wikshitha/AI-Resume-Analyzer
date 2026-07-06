@@ -2,6 +2,7 @@ import express from "express";
 import { upload } from "../utils/multer";
 import { authMiddleware } from "../middleware/auth.middleware";
 import { deleteResume, getResumeById, getUserResumes, uploadResume } from "../controllers/resume.controller";
+import { analyzeResume } from "../controllers/resumeAnalysis.controller";
 
 const router = express.Router();
 
@@ -28,6 +29,12 @@ router.get(
   "/:id",
   authMiddleware,
   getResumeById
+);
+
+router.post(
+  "/:id/analyze",
+  authMiddleware,
+  analyzeResume
 );
 
 export default router;
