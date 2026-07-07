@@ -11,6 +11,7 @@ import UploadResume from "@/pages/resume/UploadResume";
 import Analytics from "@/pages/dashboard/Analytics";
 import ResumeHistory from "@/pages/resume/ResumeHistory";
 import ResumeDetails from "@/pages/resume/ResumeDetails";
+import ResumeAnalysis from "@/pages/resume/ReumeAnalysis";
 
 export default function AppRoutes() {
   return (
@@ -28,6 +29,12 @@ export default function AppRoutes() {
     <Route path="/upload" element={<UploadResume />} />
     <Route path="/history" element={<ResumeHistory />} />
     <Route path="/resume/:id" element={<ResumeDetails />} />
+
+     <Route
+            path="/analysis/:id"
+            element={<ResumeAnalysis />}
+        />
+
     <Route path="/analytics" element={<Analytics />} />
   </Route>
 </Route>
