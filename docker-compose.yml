@@ -19,6 +19,9 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+    networks:
+      - resume-network  
+
   redis:
     image: redis:7-alpine
 
@@ -28,6 +31,12 @@ services:
 
     ports:
       - "6379:6379"
+
+    volumes:
+      - redis_data:/data
+
+    networks:
+      - resume-network  
 
   backend:
     build:
@@ -47,5 +56,29 @@ services:
     env_file:
       - ./backend/.env
 
+    networks:
+      - resume-network
+
+  frontend:
+    build:
+      context: ./frontend
+
+    container_name: resume-frontend
+
+    restart: unless-stopped
+
+    ports:
+      - "3000:80"
+
+    depends_on:
+      - backend
+
+    networks:
+      - resume-network  
+
 volumes:
   postgres_data:
+  redis_data:
+
+networks:
+  resume-network:

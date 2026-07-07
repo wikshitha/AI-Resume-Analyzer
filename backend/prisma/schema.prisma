@@ -28,6 +28,7 @@ model Resume {
 
   fileName        String
   fileUrl         String
+  cloudinaryPublicId String?
   extractedText   String?
 
   jobDescription  String?
