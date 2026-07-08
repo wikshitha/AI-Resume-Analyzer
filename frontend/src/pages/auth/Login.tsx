@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -44,7 +44,21 @@ export default function Login() {
         <Button className="w-full" disabled={isSubmitting}>
           {isSubmitting ? "Loading..." : "Login"}
         </Button>
+
+        <div className="text-center text-sm">
+          Don't have an account?{" "}
+          <Link
+            to="/register"
+            className="text-blue-600 hover:underline font-medium"
+          >
+            Register
+          </Link>
+        </div>
       </form>
+
+
     </div>
+
+
   );
 }
