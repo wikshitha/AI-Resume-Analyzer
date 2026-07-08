@@ -1,61 +1,11 @@
 @import "tailwindcss";
 
 /* ===========================
-   Theme Variables
+   AI Resume Analyzer Theme
 =========================== */
 
-:root {
-  --background: #ffffff;
-  --foreground: #111827;
-
-  --primary: #2563eb;
-  --primary-foreground: #ffffff;
-
-  --secondary: #f3f4f6;
-  --secondary-foreground: #111827;
-
-  --border: #e5e7eb;
-
-  --radius: 12px;
-}
-
-/* Dark Theme */
-
-.dark {
-  --background: #09090b;
-  --foreground: #fafafa;
-
-  --primary: #3b82f6;
-  --primary-foreground: #ffffff;
-
-  --secondary: #18181b;
-  --secondary-foreground: #fafafa;
-
-  --border: #27272a;
-}
-
-/* ===========================
-   Global Styles
-=========================== */
-
-* {
-  box-sizing: border-box;
-}
-
-html,
-body,
-#root {
-  height: 100%;
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-
-  font-family:
-    Inter,
-    system-ui,
-    sans-serif;
-
-  margin: 0;
+@theme {
+  --color-primary: #15173D;
+  --color-secondary: #F1E9E9;
+  --color-action: #982598;
 }
