@@ -20,7 +20,7 @@ RUN npx prisma generate
 RUN npm run build
 
 # Expose backend port
-EXPOSE 5000
+EXPOSE 3000
 
 # Start application
 CMD ["npm", "start"]
