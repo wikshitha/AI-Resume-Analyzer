@@ -7,15 +7,31 @@ import analyticsRoutes from "./routes/analytics.routes";
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
 app.use(express.json());
 
+app.get("/", (_req, res) => {
+  res.status(200).json({
+    message: "AI Resume Analyzer API is running",
+  });
+});
 
+app.get("/api/health", (_req, res) => {
+  res.status(200).json({
+    status: "ok",
+  });
+});
 
 app.use("/api/auth", authRoutes);
 app.use("/api/resume", resumeRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/analytics", analyticsRoutes);
-
 
 export default app;
